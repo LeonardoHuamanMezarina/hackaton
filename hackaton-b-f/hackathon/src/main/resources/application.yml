@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=hackaton;encrypt=true;trustServerCertificate=true
+    username: SA
+    password: Admin123_
+    
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: none  # Cambiar a 'none' para usar el script SQL existente
+    show-sql: true
+    

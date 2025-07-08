@@ -1,0 +1,92 @@
+.form-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-card {
+  margin-bottom: 20px;
+}
+
+.ficha-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    
+    mat-form-field {
+      flex: 1;
+    }
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+}
+
+mat-card-actions {
+  padding: 16px 24px;
+  
+  button {
+    margin-left: 8px;
+    
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+mat-spinner {
+  margin-right: 8px;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .form-container {
+    padding: 10px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  mat-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+    
+    button {
+      margin: 5px 0;
+    }
+  }
+}
+
+// Estilos adicionales para mejorar la apariencia
+mat-form-field {
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 8px;
+  }
+}
+
+.mat-mdc-card-header {
+  margin-bottom: 16px;
+}
+
+.mat-mdc-card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.mat-mdc-card-subtitle {
+  color: #666;
+  font-size: 0.9rem;
+}

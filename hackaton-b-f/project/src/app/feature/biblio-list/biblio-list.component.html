@@ -1,0 +1,186 @@
+<<div class="lista-container">
+  <div class="header-section">
+    <h2>Biblioteca Digital</h2>
+    <div class="botones-header">
+      <button mat-raised-button color="primary" (click)="abrirDialogNueva()">
+        <mat-icon>add</mat-icon>
+        Nueva Ficha
+      </button>
+      <button mat-raised-button color="warn" (click)="generarReportePDF()" class="boton-pdf">
+        <mat-icon>picture_as_pdf</mat-icon>
+        Generar PDF
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="filtros-card">
+    <mat-card-header>
+      <mat-card-title>Filtros</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="filtros-row">
+        <mat-form-field>
+          <mat-label>Buscar</mat-label>
+          <input matInput placeholder="Título, autor, tema..." 
+                 [value]="filtroTexto" 
+                 (input)="onFiltroTextoChange($event)">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Tipo de documento</mat-label>
+          <mat-select [value]="filtroTipo" (selectionChange)="onFiltroTipoChange($event.value)">
+            <mat-option value="">Todos</mat-option>
+            <mat-option *ngFor="let tipo of tiposDocumento" [value]="tipo.nombreTipo">
+              {{ tipo.nombreTipo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Estado</mat-label>
+          <mat-select [value]="filtroEstado" (selectionChange)="onFiltroEstadoChange($event.value)">
+            <mat-option value="todos">Todas</mat-option>
+            <mat-option value="activas">Activas</mat-option>
+            <mat-option value="inactivas">Inactivas</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="tabla-container">
+    <mat-card>
+      <mat-card-content>
+        <div *ngIf="loading" class="loading-container">
+          <mat-spinner></mat-spinner>
+        </div>
+
+        <table mat-table [dataSource]="fichasFiltradas" class="fichas-table" *ngIf="!loading">
+          
+          <!-- Columna Título -->
+          <ng-container matColumnDef="titulo">
+            <th mat-header-cell *matHeaderCellDef> Título </th>
+            <td mat-cell *matCellDef="let ficha"> 
+              <div class="titulo-cell">
+                <strong>{{ ficha.titulo }}</strong>
+                <small *ngIf="ficha.editorial">({{ ficha.editorial }})</small>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Columna Autor -->
+          <ng-container matColumnDef="autor">
+            <th mat-header-cell *matHeaderCellDef> Autor </th>
+            <td mat-cell *matCellDef="let ficha"> {{ ficha.autor }} </td>
+          </ng-container>
+
+          <!-- Columna Tipo -->
+          <ng-container matColumnDef="nombreTipo">
+            <th mat-header-cell *matHeaderCellDef> Tipo </th>
+            <td mat-cell *matCellDef="let ficha"> 
+              <mat-chip-listbox>
+                <mat-chip [style.background-color]="getTipoColor(ficha.nombreTipo || '')" 
+                          [style.color]="'white'">
+                  {{ formatTipoNombre(ficha.nombreTipo || '') }}
+                </mat-chip>
+              </mat-chip-listbox>
+            </td>
+          </ng-container>
+
+          <!-- Columna Año -->
+          <ng-container matColumnDef="añoPublicacion">
+            <th mat-header-cell *matHeaderCellDef> Año </th>
+            <td mat-cell *matCellDef="let ficha"> 
+              <span *ngIf="ficha['añoPublicacion']; else noAnio">
+                {{ ficha['añoPublicacion'] }}
+              </span>
+              <ng-template #noAnio>
+                <span style="color: #999; font-style: italic;">N/A</span>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Columna Tema -->
+          <ng-container matColumnDef="tema">
+            <th mat-header-cell *matHeaderCellDef> Tema </th>
+            <td mat-cell *matCellDef="let ficha"> 
+              <div class="tema-cell">
+                {{ ficha.tema }}
+                <small *ngIf="ficha.numeroPaginas">({{ ficha.numeroPaginas }} pág.)</small>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Columna Estado -->
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let ficha">
+              <mat-chip-listbox>
+                <mat-chip [style.background-color]="getEstadoColor(ficha.estado)" 
+                          [style.color]="'white'">
+                  {{ ficha.estado ? 'Activo' : 'Inactivo' }}
+                </mat-chip>
+              </mat-chip-listbox>
+            </td>
+          </ng-container>
+
+          <!-- Columna Fecha de Agregado -->
+          <ng-container matColumnDef="fechaAgregada">
+            <th mat-header-cell *matHeaderCellDef> Fecha Agregada </th>
+            <td mat-cell *matCellDef="let ficha">
+              <div class="fecha-cell">
+                {{ ficha.fechaAgregada | date:'dd/MM/yyyy' }}
+                <small>{{ ficha.fechaAgregada | date:'HH:mm' }}</small>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Columna Acciones -->
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let ficha" class="acciones-cell">
+              <div class="acciones-container">
+                <button mat-stroked-button 
+                        *ngIf="ficha.estado" 
+                        (click)="abrirDialogEditar(ficha)" 
+                        matTooltip="Editar ficha" 
+                        class="action-button edit-button">
+                  <mat-icon>edit</mat-icon>
+                  <span>Editar</span>
+                </button>
+                <button mat-stroked-button 
+                        *ngIf="ficha.estado" 
+                        (click)="eliminarFicha(ficha.idFichas!)" 
+                        matTooltip="Eliminar ficha" 
+                        class="action-button delete-button">
+                  <mat-icon>delete</mat-icon>
+                  <span>Eliminar</span>
+                </button>
+                <button mat-stroked-button 
+                        *ngIf="!ficha.estado" 
+                        (click)="restaurarFicha(ficha.idFichas!)" 
+                        matTooltip="Restaurar ficha" 
+                        class="action-button restore-button">
+                  <mat-icon>restore</mat-icon>
+                  <span>Restaurar</span>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="!loading && fichasFiltradas.length === 0" class="no-data">
+          <mat-icon>library_books</mat-icon>
+          <p>No hay fichas bibliográficas que coincidan con los filtros</p>
+          <button mat-raised-button color="primary" (click)="abrirDialogNueva()">
+            Crear nueva ficha
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

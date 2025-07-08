@@ -1,0 +1,230 @@
+// Estilos mejorados para el dialog
+.dialog-content {
+  padding: 40px 50px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background-color: #fafafa;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; // Aumentado de 32px a 40px para más espaciado
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; // Espaciado entre campos dentro de cada sección
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 32px; // Aumentado de 24px a 32px para más separación horizontal
+    
+    mat-form-field {
+      flex: 1;
+    }
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px; // Aumentado de 8px a 16px para más separación
+    
+    mat-icon[matSuffix] {
+      color: #666;
+    }
+  }
+  
+  .selected-tipo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: #555;
+    }
+    
+    span {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+  
+  .tipo-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 8px;
+    min-height: 40px;
+    
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: #555;
+      margin-right: 4px;
+    }
+    
+    span {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+}
+
+.dialog-actions {
+  padding: 30px 50px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f5f5f5;
+}
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  min-width: 140px;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  span {
+    font-weight: 500;
+  }
+}
+
+.button-spinner {
+  margin-right: 8px;
+}
+
+// Mensaje informativo para tipos simples
+.info-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  color: #1976d2;
+  border-left: 4px solid #2196f3;
+  
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  span {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
+
+// Espaciado adicional para tipos específicos
+.tipo-section {
+  margin-bottom: 32px; // Aumentado de 24px a 32px
+  padding-bottom: 24px; // Aumentado de 16px a 24px
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.form-group {
+  margin-bottom: 32px; // Aumentado de 24px a 32px
+}
+
+.campo-obligatorio {
+  margin-bottom: 28px; // Aumentado de 20px a 28px
+}
+
+.info-message {
+  margin-bottom: 28px; // Aumentado de 20px a 28px
+  padding: 16px 20px; // Aumentado el padding para más espacio
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196F3;
+  border-radius: 4px;
+  
+  mat-icon {
+    color: #2196F3;
+    margin-right: 12px; // Aumentado de 8px a 12px
+    vertical-align: middle;
+  }
+  
+  span {
+    color: #1976D2;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .dialog-content {
+    padding: 24px 32px;
+  }
+  
+  .dialog-actions {
+    padding: 24px 32px;
+    
+    .submit-button {
+      width: 100%;
+      min-width: auto;
+    }
+  }
+  
+  .dialog-form {
+    gap: 36px; // Aumentado de 28px a 36px para mantener espaciado en móviles
+    
+    .form-section {
+      padding: 16px;
+      gap: 20px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 24px; // Aumentado de 20px a 24px
+    }
+    
+    .tipo-option {
+      gap: 12px;
+      padding: 8px 6px;
+      
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+    
+    .form-group {
+      margin-bottom: 28px; // Aumentado de 20px a 28px
+    }
+    
+    .campo-obligatorio {
+      margin-bottom: 24px; // Aumentado de 16px a 24px
+    }
+  }
+}
+
+// Estilos para diferentes tipos de documento
+.tipo-libro mat-icon { color: #4CAF50; }
+.tipo-articulo mat-icon { color: #2196F3; }
+.tipo-tesis mat-icon { color: #FF9800; }
+.tipo-video mat-icon { color: #E91E63; }
+.tipo-periodico mat-icon { color: #9C27B0; }
+.tipo-repositorio mat-icon { color: #607D8B; }

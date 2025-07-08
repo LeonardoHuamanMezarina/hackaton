@@ -1,0 +1,119 @@
+<h1 mat-dialog-title>{{ isEditMode ? 'Editar Ficha Bibliográfica' : 'Nueva Ficha Bibliográfica' }}</h1>
+
+<div mat-dialog-content class="dialog-content">
+    <form [formGroup]="fichaForm" class="dialog-form">
+      
+      <!-- Sección 1: Información básica -->
+      <div class="form-section">
+        <!-- Tipo de Documento -->
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de Documento</mat-label>
+          <mat-select formControlName="tipoDocumentoId" required>
+            <mat-select-trigger>
+              <span *ngIf="fichaForm.get('tipoDocumentoId')?.value" class="selected-tipo">
+                <mat-icon>{{ getTipoIcon(getSelectedTipoNombre()) }}</mat-icon>
+                <span>{{ getSelectedTipoNombre() | titlecase }}</span>
+              </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let tipo of tiposDocumento" [value]="tipo.idTipoDocumento">
+              <div class="tipo-option">
+                <mat-icon>{{ getTipoIcon(tipo.nombreTipo) }}</mat-icon>
+                <span>{{ tipo.nombreTipo | titlecase }}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+          <mat-error>{{ getErrorMessage('tipoDocumentoId') }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Sección 2: Detalles del documento -->
+      <div class="form-section">
+        <!-- Autor o autores -->
+        <mat-form-field appearance="outline">
+          <mat-label>Autor o autores</mat-label>
+          <input matInput formControlName="autor" required maxlength="255">
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-hint align="end">{{ fichaForm.get('autor')?.value?.length || 0 }}/255</mat-hint>
+          <mat-error>{{ getErrorMessage('autor') }}</mat-error>
+        </mat-form-field>
+
+        <!-- Título -->
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="titulo" required maxlength="255">
+          <mat-icon matSuffix>title</mat-icon>
+          <mat-hint align="end">{{ fichaForm.get('titulo')?.value?.length || 0 }}/255</mat-hint>
+          <mat-error>{{ getErrorMessage('titulo') }}</mat-error>
+        </mat-form-field>
+
+        <!-- Año de Publicación -->
+        <mat-form-field appearance="outline">
+          <mat-label>Año de Publicación</mat-label>
+          <input matInput type="number" formControlName="añoPublicacion" required 
+                 [min]="1000" [max]="2025">
+          <mat-icon matSuffix>event</mat-icon>
+          <mat-error>{{ getErrorMessage('añoPublicacion') }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Sección 3: Información adicional (solo para tipos completos) -->
+      <div *ngIf="estipoCompleto()" class="form-section">
+        <!-- Fila con Editorial y Edición -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Editorial</mat-label>
+            <input matInput formControlName="editorial" maxlength="255">
+            <mat-icon matSuffix>business</mat-icon>
+            <mat-hint align="end">{{ fichaForm.get('editorial')?.value?.length || 0 }}/255</mat-hint>
+            <mat-error>{{ getErrorMessage('editorial') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Número de Edición</mat-label>
+            <input matInput formControlName="numeroEdicion" maxlength="50">
+            <mat-icon matSuffix>format_list_numbered</mat-icon>
+            <mat-hint align="end">{{ fichaForm.get('numeroEdicion')?.value?.length || 0 }}/50</mat-hint>
+            <mat-error>{{ getErrorMessage('numeroEdicion') }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Número de Páginas -->
+        <mat-form-field appearance="outline">
+          <mat-label>Número de Páginas</mat-label>
+          <input matInput type="number" formControlName="numeroPaginas" min="1">
+          <mat-icon matSuffix>description</mat-icon>
+          <mat-error>{{ getErrorMessage('numeroPaginas') }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Sección 4: Descripción -->
+      <div class="form-section">
+        <!-- Tema -->
+        <mat-form-field appearance="outline">
+          <mat-label>Tema</mat-label>
+          <textarea matInput formControlName="tema" required maxlength="255" 
+                    rows="3" placeholder="Describe el tema principal del documento"></textarea>
+          <mat-icon matSuffix>topic</mat-icon>
+          <mat-hint align="end">{{ fichaForm.get('tema')?.value?.length || 0 }}/255</mat-hint>
+          <mat-error>{{ getErrorMessage('tema') }}</mat-error>
+        </mat-form-field>
+
+        <!-- Información adicional para tipos simples -->
+        <div *ngIf="esTipoSimple()" class="info-message">
+          <mat-icon>info</mat-icon>
+          <span>Para este tipo de documento solo se requieren los campos básicos mostrados.</span>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-raised-button color="primary" 
+            [disabled]="!fichaForm.valid || loading" 
+            (click)="onSubmit()" class="submit-button">
+      <mat-spinner *ngIf="loading" diameter="20" class="button-spinner"></mat-spinner>
+      <mat-icon *ngIf="!loading">{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+      <span>{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+    </button>
+  </div>

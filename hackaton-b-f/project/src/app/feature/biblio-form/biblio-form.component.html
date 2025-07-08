@@ -1,0 +1,99 @@
+<<div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>
+        {{ isEditMode ? 'Editar Ficha Bibliográfica' : 'Nueva Ficha Bibliográfica' }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ isEditMode ? 'Modifica los datos de la ficha' : 'Completa los datos para crear una nueva ficha' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="fichaForm" (ngSubmit)="onSubmit()" class="ficha-form">
+        
+        <!-- Tipo de Documento -->
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de Documento</mat-label>
+          <mat-select formControlName="id_tipo_documento" required>
+            <mat-option *ngFor="let tipo of tiposDocumento" [value]="tipo.idTipoDocumento">
+              {{ tipo.nombreTipo | titlecase }}
+            </mat-option>
+          </mat-select>
+          <mat-error>{{ getErrorMessage('id_tipo_documento') }}</mat-error>
+        </mat-form-field>
+
+        <!-- Título -->
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="titulo" required maxlength="255">
+          <mat-hint align="end">{{ fichaForm.get('titulo')?.value?.length || 0 }}/255</mat-hint>
+          <mat-error>{{ getErrorMessage('titulo') }}</mat-error>
+        </mat-form-field>
+
+        <!-- Autor -->
+        <mat-form-field appearance="outline">
+          <mat-label>Autor</mat-label>
+          <input matInput formControlName="autor" required maxlength="255">
+          <mat-hint align="end">{{ fichaForm.get('autor')?.value?.length || 0 }}/255</mat-hint>
+          <mat-error>{{ getErrorMessage('autor') }}</mat-error>
+        </mat-form-field>
+
+        <!-- Fila con Año y Páginas -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Año de Publicación</mat-label>
+            <input matInput type="number" formControlName="añoPublicacion" required 
+                   [min]="1000" [max]="2025">
+            <mat-error>{{ getErrorMessage('añoPublicacion') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Número de Páginas</mat-label>
+            <input matInput type="number" formControlName="numero_paginas" min="1">
+            <mat-error>{{ getErrorMessage('numero_paginas') }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Fila con Editorial y Edición -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Editorial</mat-label>
+            <input matInput formControlName="editorial" maxlength="255">
+            <mat-hint align="end">{{ fichaForm.get('editorial')?.value?.length || 0 }}/255</mat-hint>
+            <mat-error>{{ getErrorMessage('editorial') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Número de Edición</mat-label>
+            <input matInput formControlName="numero_edicion" maxlength="50">
+            <mat-hint align="end">{{ fichaForm.get('numero_edicion')?.value?.length || 0 }}/50</mat-hint>
+            <mat-error>{{ getErrorMessage('numero_edicion') }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Tema -->
+        <mat-form-field appearance="outline">
+          <mat-label>Tema</mat-label>
+          <textarea matInput formControlName="tema" required maxlength="255" 
+                    rows="3" placeholder="Describe el tema principal del documento"></textarea>
+          <mat-hint align="end">{{ fichaForm.get('tema')?.value?.length || 0 }}/255</mat-hint>
+          <mat-error>{{ getErrorMessage('tema') }}</mat-error>
+        </mat-form-field>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="onCancel()">
+        Cancelar
+      </button>
+      <button mat-raised-button color="primary" 
+              [disabled]="!fichaForm.valid || loading" 
+              (click)="onSubmit()">
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        {{ isEditMode ? 'Actualizar' : 'Crear' }} Ficha
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

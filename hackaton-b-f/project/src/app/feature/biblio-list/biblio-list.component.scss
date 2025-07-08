@@ -1,0 +1,259 @@
+.lista-container {
+  padding: 20px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  
+  h2 {
+    margin: 0;
+    color: #333;
+  }
+  
+  .botones-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    
+    .boton-pdf {
+      background-color: #e53e3e !important;
+      color: white !important;
+      
+      &:hover {
+        background-color: #c53030 !important;
+        box-shadow: 0 4px 8px rgba(229, 62, 62, 0.3);
+      }
+      
+      mat-icon {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.filtros-card {
+  margin-bottom: 20px;
+  
+  .filtros-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    
+    mat-form-field {
+      flex: 1;
+      min-width: 180px;
+    }
+  }
+}
+
+.tabla-container {
+  .fichas-table {
+    width: 100%;
+    
+    .titulo-cell {
+      strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+      
+      small {
+        color: #666;
+        font-size: 0.85em;
+      }
+    }
+    
+    .tema-cell {
+      small {
+        display: block;
+        color: #666;
+        font-size: 0.85em;
+        margin-top: 2px;
+      }
+    }
+    
+    .fecha-cell {
+      small {
+        display: block;
+        color: #666;
+        font-size: 0.85em;
+        margin-top: 2px;
+      }
+    }
+    
+    // Ajustar el ancho de las columnas
+    .mat-column-titulo { width: 25%; }
+    .mat-column-autor { width: 15%; }
+    .mat-column-nombreTipo { width: 10%; }
+    .mat-column-anioPublicacion { width: 8%; }
+    .mat-column-tema { width: 20%; }
+    .mat-column-estado { width: 8%; }
+    .mat-column-fechaAgregada { width: 12%; }
+    .mat-column-acciones { width: 15%; }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    color: #ccc;
+  }
+  
+  p {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+}
+
+mat-chip {
+  color: white !important;
+  font-weight: 500;
+}
+
+// Estilos para botones de acción
+.mat-column-acciones {
+  width: 120px;
+  text-align: center;
+  
+  .mat-mdc-icon-button {
+    margin: 0 2px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// Estilos para botones de acción mejorados
+.acciones-cell {
+  padding: 8px !important;
+  
+  .acciones-container {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .action-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    min-width: 70px;
+    font-size: 12px;
+    border-radius: 4px;
+    
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+    
+    span {
+      font-weight: 500;
+    }
+  }
+  
+  .edit-button {
+    color: #1976d2;
+    border-color: #1976d2;
+    
+    &:hover {
+      background-color: rgba(25, 118, 210, 0.1);
+    }
+  }
+  
+  .delete-button {
+    color: #d32f2f;
+    border-color: #d32f2f;
+    
+    &:hover {
+      background-color: rgba(211, 47, 47, 0.1);
+    }
+  }
+  
+  .restore-button {
+    color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    
+    &:hover {
+      background-color: rgba(76, 175, 80, 0.1) !important;
+    }
+    
+    mat-icon {
+      color: #4CAF50 !important;
+    }
+  }
+}
+
+// Mejorar el aspecto de la tabla
+.fichas-table {
+  .mat-mdc-header-row {
+    background-color: #f5f5f5;
+    
+    .mat-mdc-header-cell {
+      font-weight: 600;
+      color: #333;
+    }
+  }
+  
+  .mat-mdc-row {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    &:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.01);
+    }
+  }
+}
+
+// Mejorar la transparencia de los chips
+.mat-chip-listbox {
+  .mat-chip {
+    opacity: 0.9 !important;
+    font-weight: 500 !important;
+    
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+}
+
+// Hacer que los chips de estado no tengan cursor pointer
+.mat-chip-listbox .mat-chip {
+  cursor: default !important;
+}
+
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .filtros-row {
+    flex-direction: column;
+    
+    mat-form-field {
+      min-width: unset;
+    }
+  }
+}
